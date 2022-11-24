@@ -1,6 +1,8 @@
 const UserSchema = require("../models/user")
 const {body,validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs')
+const passport = require('passport')
+const jwt = require('jsonwebtoken')
 
 
 module.exports.userPost = [
@@ -12,9 +14,7 @@ module.exports.userPost = [
     .withMessage('Senha deve ser FORTE'),
 
     function (req,res,next) {
-        const errors = validationResult(req)
-
-        //if (req.body.username!==undefined && req.body.password!==undefined && req.body.firstName!==undefined && req.body.lastName!==undefined ){            
+        const errors = validationResult(req)        
         if (errors.isEmpty()){            
             bcrypt.hash(req.body.password,10,(err,hash)=>{
                 const User = new UserSchema ({
@@ -36,3 +36,12 @@ module.exports.userPost = [
         }
     }
 ];
+
+module.exports.userGet = function (req,res,next) {
+    UserSchema.find((err,result)=>{
+        if (err){
+            return next(err)
+        }
+        res.json(result)
+    })
+}

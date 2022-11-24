@@ -3,7 +3,7 @@ var router = express.Router();
 var usersController = require('../controllers/Users')
 
 /* GET users listing. */
-//router.get('/', usersController.userGet);
+router.get('/', usersController.userGet);
 //post new user
 router.post('/', usersController.userPost);
 //delete a user

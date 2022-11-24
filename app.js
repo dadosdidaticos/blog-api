@@ -5,14 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+require('dotenv').config()
+require ('../utils/passport')
 
 var app = express();
-require('dotenv')
+
 
 const mongoose = require("mongoose");
-//console.log(process.env.MONGODB_URL)
-//const mongoDb = process.env.MONGODB_URL;
-mongoose.connect("mongodb+srv://admin:37600649aA@blog.isr9ck6.mongodb.net/blog?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
