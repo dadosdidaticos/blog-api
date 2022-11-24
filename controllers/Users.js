@@ -4,17 +4,18 @@ const bcrypt = require('bcryptjs')
 
 
 module.exports.userPost = [
-    // body(['username','password','firstName','lastName'])
-    // .isEmpty()
-    // .withMessage('um ou mais campos estão vazios'),
-    // body('password')
-    // .isStrongPassword()
-    // .withMessage('Senha deve ser FORTE'),
+    body(['username','password','firstName','lastName'])
+    .exists({checkFalsy:true})
+    .withMessage('um ou mais campos estão vazios'),
+    body('password')
+    .isStrongPassword()
+    .withMessage('Senha deve ser FORTE'),
 
     function (req,res,next) {
-        //const errors = validationResult(req)
+        const errors = validationResult(req)
 
-        if (req.body.username!==undefined && req.body.password!==undefined && req.body.firstName!==undefined && req.body.lastName!==undefined ){            
+        //if (req.body.username!==undefined && req.body.password!==undefined && req.body.firstName!==undefined && req.body.lastName!==undefined ){            
+        if (errors.isEmpty()){            
             bcrypt.hash(req.body.password,10,(err,hash)=>{
                 const User = new UserSchema ({
                     username:req.body.username,
@@ -31,7 +32,7 @@ module.exports.userPost = [
             })
         }else{
             console.log(req.body)
-            res.status(400).json({error:"um dos campos está vazio"})
+            res.status(400).json(errors.array())
         }
     }
 ];
