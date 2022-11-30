@@ -9,6 +9,6 @@ router.post('/', usersController.userPost);
 //delete a user
 //router.delete('/', usersController.userDelete);
 //authenticate user
-//router.get('/login',usersController.userLogin)
+router.post('/login',usersController.userLogin)
 
 module.exports = router;
